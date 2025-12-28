@@ -183,6 +183,7 @@ export function drawEdge(u, v) {
     to: v,     // node object
     cap: 1,
     flow: 0,
+    isUserEdge: true,
     el: line,
     labelEl: label
   };

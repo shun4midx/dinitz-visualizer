@@ -167,6 +167,12 @@ document.getElementById("undoBtn").addEventListener("click", () => {
         Number.isInteger(e.cap) ? e.cap : e.cap.toString();
     });
     return;
+  }
+
+  if (action.type === "editCap") {
+    action.edge.cap = action.prevCap;
+    action.edge.labelEl.textContent = action.prevCap.toString();
+    return;
   }  
 
   syncAfterMutation();
@@ -231,6 +237,12 @@ document.getElementById("redoBtn").addEventListener("click", () => {
     });
     return;
   }
+
+  if (action.type === "editCap") {
+    action.edge.cap = action.nextCap;
+    action.edge.labelEl.textContent = action.nextCap.toString();
+    return;
+  }  
 });
 
 document.getElementById("setSourceBtn").onclick = () => {
@@ -433,7 +445,10 @@ function setGraphUnweighted() {
   if (edges.length === 0) return;
 
   // Check if anything would actually change
-  const alreadyUnweighted = edges.every(e => e.cap === 1);
+  const userEdges = edges.filter(e => e.isUserEdge);
+  if (userEdges.length === 0) return;
+
+  const alreadyUnweighted = userEdges.every(e => e.cap === 1);
   if (alreadyUnweighted) return;
 
   history.push({
@@ -449,25 +464,27 @@ function setGraphUnweighted() {
 }
 
 export function editEdgeCapacity(edge) {
-  const input = prompt(
-    "Set edge capacity:",
-    edge.cap
-  );
-
-  if (input === null) return; // user canceled
+  const input = prompt("Set edge capacity:", edge.cap);
+  if (input === null) return;
 
   const value = Number(input);
-
   if (!Number.isFinite(value) || value < 0) {
     alert("Capacity must be a non-negative number.");
     return;
   }
 
-  edge.cap = value;
+  if (value === edge.cap) return; // No-op guard
 
-  // Display nicely: integers as ints, decimals as-is
-  edge.labelEl.textContent =
-    Number.isInteger(value) ? value : value.toString();
+  history.push({
+    type: "editCap",
+    edge,
+    prevCap: edge.cap,
+    nextCap: value
+  });
+  redoStack.length = 0;
+
+  edge.cap = value;
+  edge.labelEl.textContent = value.toString();
 }
 
 function autoAssignSourceSink() {
