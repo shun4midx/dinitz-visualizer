@@ -1,0 +1,42 @@
+<!-- 
+/********************************************
+ * Copyright (c) 2026 Shun/翔海 (@shun4midx) *
+ * Project: Dinitz-Visualizer               *
+ * File Type: HTML file                     *
+ * File: index.html                         *
+ ****************************************** */ 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dinitz Visualizer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <h3>Dinitz's Algorithm Visualizer (WIP: Right now, I only support graph drawing)</h3>
+
+  <div class="toolbar">
+    <button id="clearBtn" type="button" tabindex="-1">Clear</button>
+    <button id="undoBtn" type="button" tabindex="-1">Undo</button>
+    <button id="redoBtn" type="button" tabindex="-1">Redo</button>
+    <button id="simulateBtn" type="button" tabindex="-1">Simulate!</button>
+    <button id="toggleIdsBtn" type="button" tabindex="-1">Hide Node IDs</button>
+    <button id="unweightedBtn" type="button" tabindex="-1">Change to Unweighted</button>
+    <button id="autoSSBtn" type="button" tabindex="-1">Auto Source/Sink</button>
+  </div>
+
+  <svg id="canvas"></svg>
+
+  <div id="nodeMenu" class="node-menu hidden">
+    <button id="setSourceBtn">Set as Source</button>
+    <button id="setSinkBtn">Set as Sink</button>
+    <button id="clearRoleBtn">Clear Role</button>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

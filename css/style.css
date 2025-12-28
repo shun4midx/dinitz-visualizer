@@ -1,0 +1,158 @@
+/********************************************
+ * Copyright (c) 2025 Shun/翔海 (@shun4midx) *
+ * Project: Dinitz-Visualizer               *
+ * File Type: CSS file                      *
+ * File: style.css                          *
+ ****************************************** */
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+  font-size: 24px;
+
+  background: #211C49;
+  color: #C953D4;
+
+  margin: 0;
+  padding: 12px;
+}
+
+h3 {
+  margin: 0 0 0 0;
+  font-weight: 500;
+
+  /* magenta highlight */
+  color: #FF00FF;
+}
+
+svg {
+  /* magenta editor border */
+  border: 3px solid #FF00FF;
+  border-radius: 20px;
+  background: #141029;
+
+  display: block;
+  pointer-events: all;
+
+  width: calc(100% - 5px);
+  flex: 1 1 auto;
+  margin-bottom: 5px;
+}
+
+circle {
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+#canvas {
+  margin-top: 20px;
+}
+
+button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #1C117C;
+  color: #00B0FF;
+  border: 3px solid #00B0FF;
+  font-size: 15px;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  transition: 
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+button:hover {
+  background: #FF00FF;
+  border: 3px solid #FF00FF;
+  color: #211C49;
+}
+
+button.is-pressed {
+  transition: none;
+  transform: translateY(1px) scale(0.97);
+}
+
+button:focus,
+button:focus-visible {
+  outline: none;
+  background: #1C117C;
+  border-color: #00B0FF;
+  color: #00B0FF;
+  transform: none;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (hover: none) {
+  button:hover {
+    background: #1C117C;
+    border: 3px solid #00B0FF;
+    color: #00B0FF;
+  }
+}
+
+.node-menu {
+  position: absolute;
+  background: #1C117C;
+  border: 3px solid #FF00FF;
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 1000;
+}
+
+.node-menu.hidden {
+  display: none;
+}
+
+.node-menu button {
+  background: #1C117C;
+  border: 2px solid #00B0FF;
+  color: #00B0FF;
+  font-size: 14px;
+}
+
+.node-menu button:hover {
+  background: #FF00FF;
+  border: 2px solid #FF00FF;
+  color: #211C49;
+}
+
+/* Android button stuff */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+svg, svg * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  user-select: none;
+  -webkit-user-select: none;
+}
