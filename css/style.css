@@ -19,14 +19,15 @@ body {
   font-family: system-ui, sans-serif;
   overflow-y: show;
   
-  min-height: 610px;
+  min-height: 670px;
 
   background: #211C49;
   color: #C953D4;
 }
 
 h3 {
-  margin: 0 0 0 0;
+  margin-top: 0;
+  margin-bottom: 0.3em;
   font-weight: 500;
   font-size: calc(1em + 2vh);
 
@@ -39,16 +40,53 @@ circle {
   cursor: pointer;
 }
 
+.quick-help {
+  background-color: #1C117C;
+  color: #FF00FFCC;
+  border: 3px solid #FF00FF90;
+  border-radius: calc(0.75vh + 0.25em);
+  padding: calc(0.5vh + 0.1em) calc(0.9vh + 0.25em);
+}
+
+.quick-help summary {
+  font-size: calc(0.1vh + 0.75em);
+  list-style: none;       /* Firefox */
+}
+
+.quick-help summary::-webkit-details-marker {
+  display: none;          /* Chrome / Safari */
+}
+
+.quick-help-content {
+  font-size:  calc(0.1vh + 0.75em);
+  transform-origin: top;
+  transform: scaleY(0.95);
+  opacity: 0;
+  transition:
+    transform 1.0s ease,
+    opacity 0.5s ease;
+}
+
+.quick-help[open] .quick-help-content {
+  transform-origin: top;
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+.quick-help-content {
+  will-change: transform, opacity;
+}
+
 .toolbar {
   display: flex;
   flex-wrap: wrap;
   column-gap: calc(0.5% + 0.5vh);
-  row-gap: 1.25em;
-  margin-top: calc(0.25% + 1.25vh);
+  row-gap: calc(0.2em + 0.5vh);
+  margin-top: calc(0.2% + 0.7vh);
 }
 
 #canvas {
-  margin-top: calc(0.75% + 1.25vh);
+  margin-top: calc(0.75% + 0.5vh);
   height: 100%;
 }
 
@@ -95,8 +133,7 @@ button.is-pressed {
   transform: translateY(1px) scale(0.97);
 }
 
-button:focus,
-button:focus-visible {
+button:focus, button:focus-visible {
   outline: none;
   background: #1C117C;
   border-color: #00B0FF;

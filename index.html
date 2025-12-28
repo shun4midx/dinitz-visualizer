@@ -1,6 +1,6 @@
 <!-- 
 /********************************************
- * Copyright (c) 2026 Shun/翔海 (@shun4midx) *
+ * Copyright (c) 2025 Shun/翔海 (@shun4midx) *
  * Project: Dinitz-Visualizer               *
  * File Type: HTML file                     *
  * File: index.html                         *
@@ -18,16 +18,31 @@
 
   <h3>Dinitz's Algorithm Visualizer (WIP: Now, I only have graph drawing)</h3>
 
+  <details open class="quick-help">
+    <summary>Quick Start (Click to Open/Collapse)</summary>
+    <div class="quick-help-content">
+      <ul>
+        <li>Click on the canvas to create a node</li>
+        <li>Click a node to select it</li>
+        <li>Click another node to create an edge</li>
+        <li>Long click on touch screens or right click on computers to select the mode of a node (sink/source/normal)</li>
+        <li><em>Tip:</em> After selecting a node, clicking empty space creates and connects a new node</li>
+        <li><em>Tip 2:</em> With a keyboard, Shift + Click sets a node as the source and Ctrl/Alt/⌘ + Click sets a node as the sink</li>
+        <li><em>Tip 3:</em> "Auto Source/Sink" sets node 0 as the source and the max node ID as the sink</li>
+      </ul>
+    </div>
+  </details>  
+
   <div class="toolbar">
-    <button id="clearBtn" type="button">Clear</button>
-    <button id="undoBtn" type="button">Undo</button>
-    <button id="redoBtn" type="button">Redo</button>
-    <button id="simulateBtn" type="button">Simulate!</button>
-    <button id="toggleIdsBtn" type="button">Hide Node IDs</button>
-    <button id="unweightedBtn" type="button">Change to Unweighted</button>
-    <button id="autoSSBtn" type="button">Auto Source/Sink</button>
+    <button id="clearBtn" type="button">Clear (Ctrl/⌘ + ⌫) </button>
+    <button id="undoBtn" type="button">Undo (Ctrl/⌘ + Z)</button>
+    <button id="redoBtn" type="button">Redo (Ctrl/⌘ + Y)</button>
+    <button id="simulateBtn" type="button">Simulate! (Enter)</button>
+    <button id="toggleIdsBtn" type="button">Hide Node IDs (I)</button>
+    <button id="unweightedBtn" type="button">Make Unweighted (U)</button>
+    <button id="autoSSBtn" type="button">Auto Source/Sink (A)</button>
   </div>
-  
+
   <svg id="canvas"></svg>
 
   <div id="nodeMenu" class="node-menu hidden">
@@ -36,7 +51,7 @@
     <button id="clearRoleBtn">Clear Role</button>
   </div>
 
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
