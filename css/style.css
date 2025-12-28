@@ -90,7 +90,7 @@ button {
   }  
 }
 
-button.is-pressed, button:active {
+button.is-pressed {
   transition: none;
   transform: translateY(1px) scale(0.97);
 }
