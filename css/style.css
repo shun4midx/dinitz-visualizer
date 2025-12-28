@@ -35,6 +35,29 @@ h3 {
   color: #FF00FF;
 }
 
+/* Default link */
+a {
+  color: #00B0FF; 
+  text-decoration: none;  /* remove underline */
+}
+
+/* Visited link */
+a:visited {
+  color: #9C6BFF;
+}
+
+/* Hover / focus */
+a:hover,
+a:focus {
+  color: #FF00FF;
+  text-decoration: underline;
+}
+
+/* Active (clicking) */
+a:active {
+  color: #FF80FF;
+}
+
 circle {
   pointer-events: all;
   cursor: pointer;
