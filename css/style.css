@@ -42,7 +42,8 @@ circle {
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: calc(0.5% + 0.5vh);
+  column-gap: calc(0.5% + 0.5vh);
+  row-gap: 1.25em;
   margin-top: calc(0.25% + 1.25vh);
 }
 
@@ -81,10 +82,12 @@ button {
     transform 0.3s ease;
 }
 
-button:hover, button:focus:hover {
-  background: #FF00FF;
-  border: 0.15em solid #FF00FF;
-  color: #211C49;
+@media (hover: hover) and (pointer: fine) {
+  button:hover, button:focus:hover {
+    background: #FF00FF;
+    border: 0.15em solid #FF00FF;
+    color: #211C49;
+  }  
 }
 
 button.is-pressed, button:active {
@@ -130,10 +133,12 @@ button:disabled {
   font-size: calc(1vh + 0.5em);
 }
 
-.node-menu button:hover {
-  background: #FF00FF;
-  border: 0.15em solid #FF00FF;
-  color: #211C49;
+@media (hover: hover) and (pointer: fine) {
+  .node-menu button:hover {
+    background: #FF00FF;
+    border: 0.15em solid #FF00FF;
+    color: #211C49;
+  }
 }
 
 /* Android button stuff */
