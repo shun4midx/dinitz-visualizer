@@ -41,25 +41,19 @@ const history = [];
 const redoStack = [];
 let selectedNode = null;
 
-// Button physics
-let pressCounter = 0;
-
+// Button stuff
 document.querySelectorAll("button").forEach(btn => {
-  btn.addEventListener("pointerdown", e => {
-    e.preventDefault();
-
-    // force a style difference every press
-    pressCounter++;
-    btn.style.setProperty("--press-token", 1 + (pressCounter % 2) * 0.01);
-
+  btn.addEventListener("mousedown", () => {
     btn.classList.add("is-pressed");
   });
 
-  const release = () => btn.classList.remove("is-pressed");
+  btn.addEventListener("mouseup", () => {
+    btn.classList.remove("is-pressed");
+  });
 
-  btn.addEventListener("pointerup", release);
-  btn.addEventListener("pointercancel", release);
-  btn.addEventListener("pointerleave", release);
+  btn.addEventListener("mouseleave", () => {
+    btn.classList.remove("is-pressed");
+  });
 });
 
 let ignoreCanvasClickUntil = 0;
@@ -152,6 +146,10 @@ function syncAfterMutation() {
 function setGraphUnweighted() {
   if (edges.length === 0) return;
 
+  // Check if anything would actually change
+  const alreadyUnweighted = edges.every(e => e.cap === 1);
+  if (alreadyUnweighted) return;
+
   history.push({
     type: "setUnweighted",
     prevCaps: edges.map(e => e.cap)
@@ -185,7 +183,7 @@ function drawNode(x, y) {
   const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   c.setAttribute("cx", x);
   c.setAttribute("cy", y);
-  c.setAttribute("r", 20);
+  c.setAttribute("r", Math.max(20, window.innerHeight * 0.015));
   c.setAttribute("fill", "#1C117C");
   c.setAttribute("stroke", "#00B0FF");
   c.setAttribute("stroke-width", "2.5");
@@ -194,12 +192,11 @@ function drawNode(x, y) {
   label.setAttribute("x", x);
   label.setAttribute("y", y + 1);
   label.setAttribute("fill", "#66BFFF");   // soft blue
-  label.setAttribute("font-size", "15");
+  label.setAttribute("font-size", "calc(80% + 0.8vh)");
   label.setAttribute("font-weight", "400"); // normal weight
   label.setAttribute("font-family", "system-ui, sans-serif");
   label.setAttribute("text-anchor", "middle");
   label.setAttribute("dominant-baseline", "middle");
-  label.style.pointerEvents = "none";
   label.style.display = showNodeIds ? "block" : "none";
   label.textContent = "";
 
@@ -258,8 +255,8 @@ function drawEdge(u, v) {
   label.setAttribute("x", lx);
   label.setAttribute("y", ly);
   label.setAttribute("fill", "#FFFFFF");
-  label.setAttribute("font-size", "15");
-  label.setAttribute("font-weight", "700"); // bold weight
+  label.setAttribute("font-size", Math.max(20, window.innerHeight * 0.015));
+  label.setAttribute("font-weight", "500"); // bold weight
   label.setAttribute("text-anchor", "middle");
   label.setAttribute("dominant-baseline", "middle");
   label.textContent = "1";
@@ -324,6 +321,14 @@ function autoAssignSourceSink() {
     sink: sorted[sorted.length - 1]
   };
 
+  const nextSource = sorted[0];
+  const nextSink = sorted[sorted.length - 1];
+
+  // No-op check
+  if (sourceNode === nextSource && sinkNode === nextSink) {
+    return;
+  }
+
   history.push({
     type: "setRoles",
     from: prev,
@@ -336,9 +341,13 @@ function autoAssignSourceSink() {
   restyleAllNodes();
 }
 
-svg.addEventListener("pointerup", (e) => {
+svg.addEventListener("click", (e) => {
   if (!nodeMenu.classList.contains("hidden")) {
-    e.stopPropagation();
+    hideNodeMenu();
+    return;
+  }
+
+  if (nodeMenu.contains(e.target)) {
     return;
   }
   
@@ -474,24 +483,7 @@ svg.addEventListener("pointerup", (e) => {
   }
 });
 
-document.addEventListener(
-  "pointerdown", (e) => {
-    if (nodeMenu.classList.contains("hidden")) return;
-
-    // If clicking inside the menu, do nothing
-    if (nodeMenu.contains(e.target)) return;
-
-    // If clicking a node (that might open the menu), do nothing
-    if (e.target.__node) return;
-
-    // Otherwise: close menu
-    hideNodeMenu();
-  },
-  true // Capture phase
-);
-
-
-document.getElementById("clearBtn").addEventListener("pointerup", () => {
+document.getElementById("clearBtn").addEventListener("click", () => {
   if (nodes.length === 0 && edges.length === 0) return;
 
   history.push({
@@ -517,7 +509,7 @@ document.getElementById("clearBtn").addEventListener("pointerup", () => {
   selectedNode = null;
 });
 
-document.getElementById("undoBtn").addEventListener("pointerup", () => {
+document.getElementById("undoBtn").addEventListener("click", () => {
   const action = history.pop();
   if (!action) return;
 
@@ -591,7 +583,7 @@ document.getElementById("undoBtn").addEventListener("pointerup", () => {
   syncAfterMutation();
 });
 
-document.getElementById("redoBtn").addEventListener("pointerup", () => {
+document.getElementById("redoBtn").addEventListener("click", () => {
   const action = redoStack.pop();
   if (!action) return;
 
@@ -711,13 +703,22 @@ function hideNodeMenu() {
 
 document.getElementById("setSourceBtn").onclick = () => {
   if (!menuNode) return;
+
+  // Check no change
+  if (menuNode === sourceNode) {
+    hideNodeMenu();
+    return;
+  }
+
   history.push({
     type: "setRoles",
     from: { source: sourceNode, sink: sinkNode },
     to: { source: menuNode, sink: sinkNode === menuNode ? null : sinkNode }
   });
   redoStack.length = 0;
+  
   sourceNode = menuNode;
+
   if (sinkNode === sourceNode) sinkNode = null;
   restyleAllNodes();
   hideNodeMenu();
@@ -725,13 +726,22 @@ document.getElementById("setSourceBtn").onclick = () => {
 
 document.getElementById("setSinkBtn").onclick = () => {
   if (!menuNode) return;
+
+  // Check no change
+  if (menuNode === sinkNode) {
+    hideNodeMenu();
+    return;
+  }
+
   history.push({
     type: "setRoles",
     from: { source: sourceNode, sink: sinkNode },
     to: { source: sourceNode === menuNode ? null : sourceNode, sink: menuNode }
   });
   redoStack.length = 0;
+
   sinkNode = menuNode;
+  
   if (sourceNode === sinkNode) sourceNode = null;
   restyleAllNodes();
   hideNodeMenu();
@@ -739,6 +749,13 @@ document.getElementById("setSinkBtn").onclick = () => {
 
 document.getElementById("clearRoleBtn").onclick = () => {
   if (!menuNode) return;
+
+  // Check no change
+  if (menuNode !== sourceNode && menuNode !== sinkNode) {
+    hideNodeMenu();
+    return;
+  }
+
   history.push({
     type: "setRoles",
     from: { source: sourceNode, sink: sinkNode },
@@ -748,32 +765,29 @@ document.getElementById("clearRoleBtn").onclick = () => {
     }
   });
   redoStack.length = 0;
+  
   if (sourceNode === menuNode) sourceNode = null;
   if (sinkNode === menuNode) sinkNode = null;
   restyleAllNodes();
   hideNodeMenu();
 };
 
-document.getElementById("simulateBtn").addEventListener("pointerup", e => {
-  e.preventDefault();
+document.getElementById("simulateBtn").addEventListener("click", () => {
   blockCanvasClicks();
   simulate();
 });
 
-document.getElementById("toggleIdsBtn").addEventListener("pointerup", e => {
-  e.preventDefault();
+document.getElementById("toggleIdsBtn").addEventListener("click", () => {
   blockCanvasClicks();
   toggleNodeIds();
 });
 
-document.getElementById("unweightedBtn").addEventListener("pointerup", e => {
-  e.preventDefault();
+document.getElementById("unweightedBtn").addEventListener("click", () => {
   blockCanvasClicks();
   setGraphUnweighted();
 });
 
-document.getElementById("autoSSBtn").addEventListener("pointerup", e => {
-  e.preventDefault();
+document.getElementById("autoSSBtn").addEventListener("click", () => {
   blockCanvasClicks();
   autoAssignSourceSink();
 });

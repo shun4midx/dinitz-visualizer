@@ -16,23 +16,23 @@
 </head>
 <body>
 
-  <h3>Dinitz's Algorithm Visualizer (WIP: Right now, I only support graph drawing)</h3>
+  <h3>Dinitz's Algorithm Visualizer (WIP: Now, I only have graph drawing)</h3>
 
   <div class="toolbar">
-    <button id="clearBtn" type="button" tabindex="-1">Clear</button>
-    <button id="undoBtn" type="button" tabindex="-1">Undo</button>
-    <button id="redoBtn" type="button" tabindex="-1">Redo</button>
-    <button id="simulateBtn" type="button" tabindex="-1">Simulate!</button>
-    <button id="toggleIdsBtn" type="button" tabindex="-1">Hide Node IDs</button>
-    <button id="unweightedBtn" type="button" tabindex="-1">Change to Unweighted</button>
-    <button id="autoSSBtn" type="button" tabindex="-1">Auto Source/Sink</button>
+    <button id="clearBtn" type="button">Clear</button>
+    <button id="undoBtn" type="button">Undo</button>
+    <button id="redoBtn" type="button">Redo</button>
+    <button id="simulateBtn" type="button">Simulate!</button>
+    <button id="toggleIdsBtn" type="button">Hide Node IDs</button>
+    <button id="unweightedBtn" type="button">Change to Unweighted</button>
+    <button id="autoSSBtn" type="button">Auto Source/Sink</button>
   </div>
-
+  
   <svg id="canvas"></svg>
 
   <div id="nodeMenu" class="node-menu hidden">
-    <button id="setSourceBtn">Set as Source</button>
-    <button id="setSinkBtn">Set as Sink</button>
+    <button id="setSourceBtn">Set Source</button>
+    <button id="setSinkBtn">Set Sink</button>
     <button id="clearRoleBtn">Clear Role</button>
   </div>
 

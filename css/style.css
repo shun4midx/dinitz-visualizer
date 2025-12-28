@@ -13,24 +13,42 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  padding: 12px;
+  margin: 0;
+  padding: calc(1% + 1vh);
   box-sizing: border-box;
   font-family: system-ui, sans-serif;
-  font-size: 24px;
+  overflow-y: show;
+  
+  min-height: 610px;
 
   background: #211C49;
   color: #C953D4;
-
-  margin: 0;
-  padding: 12px;
 }
 
 h3 {
   margin: 0 0 0 0;
   font-weight: 500;
+  font-size: calc(1em + 2vh);
 
   /* magenta highlight */
   color: #FF00FF;
+}
+
+circle {
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(0.5% + 0.5vh);
+  margin-top: calc(0.25% + 1.25vh);
+}
+
+#canvas {
+  margin-top: calc(0.75% + 1.25vh);
+  height: 100%;
 }
 
 svg {
@@ -43,32 +61,16 @@ svg {
   pointer-events: all;
 
   width: calc(100% - 5px);
-  flex: 1 1 auto;
-  margin-bottom: 5px;
-}
-
-circle {
-  pointer-events: all;
-  cursor: pointer;
-}
-
-.toolbar {
-  display: flex;
-  gap: 12px;
-  margin-top: 15px;
-}
-
-#canvas {
-  margin-top: 20px;
+  min-height: 410px;
 }
 
 button {
-  padding: 8px 14px;
+  padding: calc(0.75vh + 0.25%) calc(1vh + 0.5%);
   border-radius: 10px;
   background: #1C117C;
   color: #00B0FF;
-  border: 3px solid #00B0FF;
-  font-size: 15px;
+  border: 0.15em solid #00B0FF;
+  font-size: calc(1vh + 0.5em);
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
@@ -79,13 +81,13 @@ button {
     transform 0.3s ease;
 }
 
-button:hover {
+button:hover, button:focus:hover {
   background: #FF00FF;
-  border: 3px solid #FF00FF;
+  border: 0.15em solid #FF00FF;
   color: #211C49;
 }
 
-button.is-pressed {
+button.is-pressed, button:active {
   transition: none;
   transform: translateY(1px) scale(0.97);
 }
@@ -96,7 +98,6 @@ button:focus-visible {
   background: #1C117C;
   border-color: #00B0FF;
   color: #00B0FF;
-  transform: none;
 }
 
 button:disabled {
@@ -105,18 +106,10 @@ button:disabled {
   transform: none;
 }
 
-@media (hover: none) {
-  button:hover {
-    background: #1C117C;
-    border: 3px solid #00B0FF;
-    color: #00B0FF;
-  }
-}
-
 .node-menu {
   position: absolute;
   background: #1C117C;
-  border: 3px solid #FF00FF;
+  border: 2px solid #FF00FF;
   border-radius: 12px;
   padding: 8px;
   display: flex;
@@ -131,14 +124,15 @@ button:disabled {
 
 .node-menu button {
   background: #1C117C;
-  border: 2px solid #00B0FF;
+  border: 0.15em solid #00B0FF;
+  min-width: max-content;
   color: #00B0FF;
-  font-size: 14px;
+  font-size: calc(1vh + 0.5em);
 }
 
 .node-menu button:hover {
   background: #FF00FF;
-  border: 2px solid #FF00FF;
+  border: 0.15em solid #FF00FF;
   color: #211C49;
 }
 
