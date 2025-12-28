@@ -147,7 +147,7 @@ button:disabled {
 }
 
 .node-menu {
-  position: absolute;
+  position: fixed !important;
   background: #1C117C;
   border: 2px solid #FF00FF;
   border-radius: 12px;
