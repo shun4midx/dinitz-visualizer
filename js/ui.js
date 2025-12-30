@@ -487,6 +487,7 @@ function setGraphUnweighted() {
 }
 
 export function editEdgeCapacity(edge) {
+  exitSimulation();
   const input = prompt("Set edge capacity:", edge.cap);
   if (input === null) return;
 
