@@ -41,6 +41,10 @@ import {
   syncAfterMutation 
 } from "./ui.js";
 
+import {
+  exitSimulation
+} from "./simulator.js";
+
 export function blockCanvasClicks(ms = 120) {
   setIgnoreCanvasClickUntil(Date.now() + ms);
 }
@@ -76,6 +80,8 @@ svg.addEventListener("click", (e) => {
   }
 
   const p = getSVGPoint(e);
+
+  exitSimulation();
 
   // Edge click
   if (e.target.__edge) {
