@@ -16,36 +16,63 @@
 </head>
 <body>
 
-  <h3>Dinitz's Algorithm Visualizer (WIP: Now, I only have graph drawing)</h3>
+  <h3>Dinitz's Algorithm Visualizer<span id="maxflowDisplay" style="margin-left: 8px; color: #00FFFF;"></span></h3>
 
   <details open class="quick-help">
     <summary>Quick Start (Click to Open/Collapse)</summary>
     <div class="quick-help-content">
       <ul>
         <li>Click on the canvas to create a node</li>
-        <li>Click a node to select it</li>
+        <li>Click a node to select it, or deselect it if it's already selected</li>
         <li>Click another node to create an edge (defaulted to capacity = 1)</li>
-        <li>Long click on touch screens or right click on computers to select the mode of a node (sink/source/normal)</li>
-        <li>Click on the white label for any arrow to change the capacity of the edge to any nonnegative number</li>
+        <li>Long click on touch screens or right click with a mouse/trackpad to select the mode of a node (sink/source/normal)</li>
+        <li>Click on the white label for any arrow, to change the capacity of the edge to any nonnegative number</li>
         <li><em>Tip:</em> After selecting a node, clicking empty space creates and connects a new node with an edge</li>
         <li><em>Tip 2:</em> With a keyboard, Shift + Click sets a node as the source and Ctrl/Alt/⌘ + Click sets a node as the sink</li>
         <li><em>Tip 3:</em> "Auto Source/Sink" sets node 0 as the source and the max node ID as the sink</li>
-        <li><b>For more details, please check out <a href="https://github.com/shun4midx/dinitz-visualizer">my README</a> for this visualizer.</b></li>
       </ul>
     </div>
-  </details>  
+  </details>
 
   <div class="toolbar">
-    <button id="clearBtn" type="button">Clear (Ctrl/⌘ + ⌫) </button>
-    <button id="undoBtn" type="button">Undo (Ctrl/⌘ + Z)</button>
-    <button id="redoBtn" type="button">Redo (Ctrl/⌘ + Y)</button>
-    <button id="simulateBtn" type="button">Simulate! (Enter)</button>
-    <button id="toggleIdsBtn" type="button">Hide Node IDs (I)</button>
-    <button id="unweightedBtn" type="button">Make Unweighted (U)</button>
-    <button id="autoSSBtn" type="button">Auto Source/Sink (A)</button>
+    <button id="clearBtn" type="button">Clear</button>
+    <button id="undoBtn" type="button">Undo</button>
+    <button id="redoBtn" type="button">Redo</button>
+    <button id="simulateBtn" type="button">Simulate!</button>
+    <button id="toggleIdsBtn" type="button">Hide Node <u>I</u>Ds</button>
+    <button id="unweightedBtn" type="button">Set <u>U</u>nweighted</button>
+    <button id="autoSSBtn" type="button"><u>A</u>uto Source/Sink</button>
+    <button id="exitSimBtn" disabled><u>E</u>xit Simulation</button>
   </div>
 
-  <svg id="canvas"></svg>
+  <div class="canvas-wrapper">
+    <svg id="canvas"></svg>
+  
+    <div class="legend overlay">
+      <div class="kbd-section">
+        Keyboard Shortcuts:
+      
+        <div>Clear: Ctrl/⌘+⌫</div>
+        <div>Undo: Ctrl/⌘+Z</div>
+        <div>Redo: Ctrl/⌘+Y or Ctrl/⌘+Shift+Z</div>
+        <div>Simul: Enter or Space</div>
+        <div>Others: Underlined</div>
+      
+        <br>
+      </div>
+
+      Graph Colors (Check "Quick Start"):
+      <div><span class="dot sel"></span> Selected Node</div>
+      <div><span class="dot src"></span> Source</div>
+      <div><span class="dot sink"></span> Sink</div>
+      <br>
+      Simulation Colors:
+      <div><span class="dot bfs"></span> BFS edge</div>
+      <div><span class="dot dfs"></span> DFS edge</div>
+      <div><span class="dot curnode"></span> Current node</div>
+      <div><span class="dot rev"></span> Reverse residual</div>
+    </div>
+  </div>  
 
   <div id="nodeMenu" class="node-menu hidden">
     <button id="setSourceBtn">Set Source</button>

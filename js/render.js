@@ -5,6 +5,7 @@
  * File: render.js                          *
  ****************************************** */
 
+// ======== Graph Drawing Stuff ======== //
 // Import
 import {
   nodes,
@@ -16,6 +17,10 @@ import {
   addEdge
 } from "./state.js";
 
+import {
+  StepType
+} from "./dinitz.js";
+
 export const svg = document.getElementById("canvas");
 
 // Arrowhead definition (for directed edges)
@@ -23,16 +28,18 @@ export const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs
 
 export const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
 marker.setAttribute("id", "arrow");
-marker.setAttribute("markerWidth", "10");
-marker.setAttribute("markerHeight", "10");
+marker.setAttribute("markerWidth", "12");
+marker.setAttribute("markerHeight", "12");
+marker.setAttribute("viewBox", "0 0 12 12");
 marker.setAttribute("refX", "8");
-marker.setAttribute("refY", "3");
+marker.setAttribute("refY", "6");
 marker.setAttribute("orient", "auto");
-marker.setAttribute("markerUnits", "strokeWidth");
 
 export const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-path.setAttribute("d", "M0,0 L0,6 L9,3 z");
-path.setAttribute("fill", "#FF00FF"); // same as edge color
+path.setAttribute("d", "M0,2 L0,10 L10,6 z");
+path.setAttribute("fill", "context-stroke");
+path.setAttribute("stroke", "context-stroke");
+path.setAttribute("stroke-width", "0");
 
 marker.appendChild(path);
 defs.appendChild(marker);
@@ -184,6 +191,7 @@ export function drawEdge(u, v) {
     cap: 1,
     flow: 0,
     isUserEdge: true,
+    isSimEdge: false,
     el: line,
     labelEl: label
   };
@@ -195,4 +203,86 @@ export function drawEdge(u, v) {
   addEdge(edge);
   
   return edge;
+}
+
+// ======== Dinitz Stuff ======== //
+export function renderStep(step) {
+  switch (step.type) {
+    case StepType.H_EDGE:
+      highlightEdge(step.edge, step.kind);
+      break;
+
+    case StepType.H_NODE:
+      highlightNode(step.id, step.kind);
+      break;
+
+    case StepType.FLOW:
+      updateEdgeFlow(step.edge, step.flow);
+      break;
+
+    case StepType.CLEAR:
+      clearHighlights();
+      break;
+
+    case StepType.TEXT:
+      logText(step.msg);
+      break;
+  }
+}
+
+function highlightEdge(edge, kind) {
+  if (!edge?.el) return;
+
+  let color = "#00FFFF"; // cyan default
+  if (kind === "dfs") color = "#9C6BFF"; // purple
+  if (kind === "bfs-rev") color = "#FFFFFF";
+
+  edge.el.setAttribute("stroke", color);
+  edge.labelEl.setAttribute("fill", color); // label
+}
+
+function highlightNode(id, kind) {
+  const node = nodes[id];
+  if (!node) return;
+
+  const color = "#9C6BFF"; // active
+
+  node.circleEl.setAttribute("stroke", color);
+  node.circleEl.setAttribute("stroke-width", "4");
+  node.labelEl.setAttribute("fill", color);
+}
+
+function updateEdgeFlow(edge, flow) {
+  if (!edge) return;
+
+  edge.flow = flow;
+  edge.isSimEdge = true;
+  edge.labelEl.textContent = `${edge.flow} / ${edge.cap}`;
+}
+
+export function clearHighlights() {
+  for (const e of edges) {
+    e.el.setAttribute("stroke", "#FF00FF");
+    e.labelEl.setAttribute("fill", "#FFFFFF");
+  }
+  restyleAllNodes();
+}
+
+export function restoreEditView() {
+  for (const e of edges) {
+    // reset colors
+    e.el.setAttribute("stroke", "#FF00FF");
+    e.labelEl.setAttribute("fill", "#FFFFFF");
+
+    // reset label semantics
+    e.isSimEdge = false;
+    e.flow = 0;
+    e.labelEl.textContent = e.cap.toString();
+  }
+
+  restyleAllNodes();
+}
+
+function logText(msg) {
+  console.log(msg);
 }

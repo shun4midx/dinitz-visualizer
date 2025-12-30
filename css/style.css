@@ -35,29 +35,6 @@ h3 {
   color: #FF00FF;
 }
 
-/* Default link */
-a {
-  color: #00B0FF; 
-  text-decoration: none;  /* remove underline */
-}
-
-/* Visited link */
-a:visited {
-  color: #9C6BFF;
-}
-
-/* Hover / focus */
-a:hover,
-a:focus {
-  color: #FF00FF;
-  text-decoration: underline;
-}
-
-/* Active (clicking) */
-a:active {
-  color: #FF80FF;
-}
-
 circle {
   pointer-events: all;
   cursor: pointer;
@@ -109,7 +86,6 @@ circle {
 }
 
 #canvas {
-  margin-top: calc(0.75% + 0.5vh);
   height: 100%;
 }
 
@@ -215,3 +191,68 @@ button {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* Legend and its fix */
+
+.canvas-row {
+  display: flex;
+  gap: 14px;
+  margin-top: calc(0.75% + 0.5vh);
+  flex: 1;
+}
+
+/* Legend as a side panel */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-top: calc(0.75% + 0.5vh);
+}
+
+.canvas-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .legend.overlay .kbd-section {
+    color: #FFFFFF !important;
+    font-size: 0 !important;
+    display: none !important;
+  }
+}
+
+/* Overlay legend */
+.legend.overlay {
+  position: absolute;
+  top: calc(max(1.5vh, 0.5vh + 0.7em));
+  right: calc(max(1vh, 0.3vh + 0.5em));
+
+  padding: calc(max(0.75vh, 10px)) calc(max(1vh, 12px));
+  background: rgba(28, 17, 124, 0.88);
+  border: 2px solid #FF00FF55;
+  border-radius: 12px;
+
+  font-size: calc(max(1.5vh, 0.5vh + 0.7em));
+  opacity: 0.8;
+
+  pointer-events: none;
+
+  max-width: calc(max(300px, 20%));
+}
+
+.legend .dot {
+  display: inline-block;
+  width: calc(max(1vh, 0.3vh + 0.5em));
+  height: calc(max(1vh, 0.3vh + 0.5em));
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+.dot.sel { background: #FF00CC; }
+.dot.bfs { background: #00FFFF; } 
+.dot.dfs { background: #9C6BFF; } 
+.dot.curnode { background: #9C6BFF; } 
+.dot.rev { background: #FFFFFF } 
+.dot.src { background: #00FF88; } 
+.dot.sink { background: #FF4444; }

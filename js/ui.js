@@ -31,6 +31,7 @@ import {
 } from "./render.js";
 
 import { 
+  exitSimulation,
   simulate 
 } from "./simulator.js";
 
@@ -73,6 +74,7 @@ export function hideNodeMenu() {
 
 // Button handlers
 document.getElementById("clearBtn").addEventListener("click", () => {
+  exitSimulation();
   if (nodes.length === 0 && edges.length === 0) return;
 
   history.push({
@@ -99,6 +101,7 @@ document.getElementById("clearBtn").addEventListener("click", () => {
 });
 
 document.getElementById("undoBtn").addEventListener("click", () => {
+  exitSimulation();
   const action = history.pop();
   if (!action) return;
 
@@ -179,6 +182,7 @@ document.getElementById("undoBtn").addEventListener("click", () => {
 });
 
 document.getElementById("redoBtn").addEventListener("click", () => {
+  exitSimulation();
   const action = redoStack.pop();
   if (!action) return;
 
@@ -246,6 +250,7 @@ document.getElementById("redoBtn").addEventListener("click", () => {
 });
 
 document.getElementById("setSourceBtn").onclick = () => {
+  exitSimulation();
   if (!menuNode) return;
 
   // Check no change
@@ -269,6 +274,7 @@ document.getElementById("setSourceBtn").onclick = () => {
 };
 
 document.getElementById("setSinkBtn").onclick = () => {
+  exitSimulation();
   if (!menuNode) return;
 
   // Check no change
@@ -292,6 +298,7 @@ document.getElementById("setSinkBtn").onclick = () => {
 };
 
 document.getElementById("clearRoleBtn").onclick = () => {
+  exitSimulation();
   if (!menuNode) return;
 
   // Check no change
@@ -322,19 +329,28 @@ document.getElementById("simulateBtn").addEventListener("click", () => {
 });
 
 document.getElementById("toggleIdsBtn").addEventListener("click", () => {
+  exitSimulation();
   blockCanvasClicks();
   toggleNodeIds();
 });
 
 document.getElementById("unweightedBtn").addEventListener("click", () => {
+  exitSimulation();
   blockCanvasClicks();
   setGraphUnweighted();
 });
 
 document.getElementById("autoSSBtn").addEventListener("click", () => {
+  exitSimulation();
   blockCanvasClicks();
   autoAssignSourceSink();
 });
+
+document.getElementById("exitSimBtn").addEventListener("click", () => {
+  blockCanvasClicks();
+  exitSimulation();
+});
+
 
 // Keyboard shortcuts
 document.addEventListener("keydown", (e) => {
@@ -405,13 +421,20 @@ document.addEventListener("keydown", (e) => {
       blockCanvasClicks();
       document.getElementById("simulateBtn").click();
       break;
+
+    case "e": // Exit Simulator
+      e.preventDefault();
+      blockCanvasClicks();
+      document.getElementById("exitSimBtn").click();
+      break;
   }
 });
 
 function updateToggleIdsButton() {
   const btn = document.getElementById("toggleIdsBtn");
   if (!btn) return;
-  btn.textContent = showNodeIds ? "Hide Node IDs (I)" : "Show Node IDs (I)";
+
+  btn.innerHTML = showNodeIds ? "Hide Node <u>I</u>Ds" : "Show Node <u>I</u>Ds";
 }
 
 function toggleNodeIds() {

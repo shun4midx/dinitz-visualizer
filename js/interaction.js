@@ -19,7 +19,8 @@ import {
   setSourceNode,
   setSinkNode,
   ignoreCanvasClickUntil,
-  setIgnoreCanvasClickUntil
+  setIgnoreCanvasClickUntil,
+  isSimulating
 } from "./state.js";
 
 import {
@@ -57,6 +58,10 @@ function getSVGPoint(evt) {
 
 // SVG listeners
 svg.addEventListener("click", (e) => {
+  if (isSimulating) {
+    return;
+  }
+
   if (isNodeMenuOpen()) {
     hideNodeMenu();
     return;
