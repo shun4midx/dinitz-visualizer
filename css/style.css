@@ -252,7 +252,7 @@ button {
 .dot.sel { background: #FF00CC; }
 .dot.bfs { background: #00FFFF; } 
 .dot.dfs { background: #9C6BFF; } 
-.dot.curnode { background: #9C6BFF; } 
+.dot.consnode { background: #9C6BFF; } 
 .dot.rev { background: #FFFFFF } 
 .dot.src { background: #00FF88; } 
 .dot.sink { background: #FF4444; }
