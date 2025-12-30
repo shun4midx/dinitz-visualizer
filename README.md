@@ -9,4 +9,4 @@ The tool allows users to:
 
 The implementation follows the standard Dinitz algorithm, with explicit residual graph construction and step-by-step execution exposed through a visualization layer.
 
-Instructions are written on the website itself.
+Instructions are written on the [website](https://shun4midx.github.io/dinitz-visualizer) itself.
