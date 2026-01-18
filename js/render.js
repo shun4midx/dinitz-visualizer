@@ -1,5 +1,5 @@
 /********************************************
- * Copyright (c) 2025 Shun/翔海 (@shun4midx) *
+ * Copyright (c) 2026 Shun/翔海 (@shun4midx) *
  * Project: Dinitz-Visualizer               *
  * File Type: JS file                       *
  * File: render.js                          *
@@ -26,23 +26,29 @@ export const svg = document.getElementById("canvas");
 // Arrowhead definition (for directed edges)
 export const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
 
-export const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
-marker.setAttribute("id", "arrow");
-marker.setAttribute("markerWidth", "12");
-marker.setAttribute("markerHeight", "12");
-marker.setAttribute("viewBox", "0 0 12 12");
-marker.setAttribute("refX", "8");
-marker.setAttribute("refY", "6");
-marker.setAttribute("orient", "auto");
+function makeArrowMarker(id, color) {
+  const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+  marker.setAttribute("id", id);
+  marker.setAttribute("markerWidth", "12");
+  marker.setAttribute("markerHeight", "12");
+  marker.setAttribute("viewBox", "0 0 12 12");
+  marker.setAttribute("refX", "8");
+  marker.setAttribute("refY", "6");
+  marker.setAttribute("orient", "auto");
 
-export const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-path.setAttribute("d", "M0,2 L0,10 L10,6 z");
-path.setAttribute("fill", "context-stroke");
-path.setAttribute("stroke", "context-stroke");
-path.setAttribute("stroke-width", "0");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", "M0,2 L0,10 L10,6 z");
+  path.setAttribute("fill", color);
 
-marker.appendChild(path);
-defs.appendChild(marker);
+  marker.appendChild(path);
+  return marker;
+}
+
+defs.appendChild(makeArrowMarker("arrow-magenta", "#FF00FF"));
+defs.appendChild(makeArrowMarker("arrow-cyan", "#00FFFF"));
+defs.appendChild(makeArrowMarker("arrow-purple", "#9C6BFF"));
+defs.appendChild(makeArrowMarker("arrow-white", "#FFFFFF"));
+
 svg.appendChild(defs);
 
 // Create separate groups for edges and nodes
@@ -170,7 +176,7 @@ export function drawEdge(u, v) {
   line.setAttribute("stroke", "#FF00FF");
   line.setAttribute("stroke-width", "3.5");
   line.setAttribute("opacity", "1");
-  line.setAttribute("marker-end", "url(#arrow)");
+  line.setAttribute("marker-end", "url(#arrow-magenta)");
 
   const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
   label.setAttribute("x", lx);
@@ -234,10 +240,19 @@ function highlightEdge(edge, kind) {
   if (!edge?.el) return;
 
   let color = "#00FFFF"; // cyan default
-  if (kind === "dfs") color = "#9C6BFF"; // purple
-  if (kind === "bfs-rev") color = "#FFFFFF";
+  let marker = "arrow-cyan";
+
+  if (kind === "dfs") {
+    color = "#9C6BFF";
+    marker = "arrow-purple";
+  }
+  if (kind === "bfs-rev") {
+    color = "#FFFFFF";
+    marker = "arrow-white";
+  }
 
   edge.el.setAttribute("stroke", color);
+  edge.el.setAttribute("marker-end", `url(#${marker})`);
   edge.labelEl.setAttribute("fill", color); // label
 }
 
@@ -263,6 +278,7 @@ function updateEdgeFlow(edge, flow) {
 export function clearHighlights() {
   for (const e of edges) {
     e.el.setAttribute("stroke", "#FF00FF");
+    e.el.setAttribute("marker-end", "url(#arrow-magenta)");
     e.labelEl.setAttribute("fill", "#FFFFFF");
   }
   restyleAllNodes();
@@ -272,6 +288,7 @@ export function restoreEditView() {
   for (const e of edges) {
     // reset colors
     e.el.setAttribute("stroke", "#FF00FF");
+    e.el.setAttribute("marker-end", "url(#arrow-magenta)");
     e.labelEl.setAttribute("fill", "#FFFFFF");
 
     // reset label semantics
