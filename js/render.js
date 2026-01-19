@@ -254,6 +254,7 @@ function highlightEdge(edge, kind) {
   }
 
   edge.el.setAttribute("stroke", color);
+  edge.el.setAttribute("marker-end", "none"); // iPad Safari paint workaround
   edge.el.setAttribute("marker-end", `url(#${marker})`);
   edge.labelEl.setAttribute("fill", color); // label
 }
