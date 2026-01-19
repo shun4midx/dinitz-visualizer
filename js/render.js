@@ -35,6 +35,8 @@ function makeArrowMarker(id, color) {
   marker.setAttribute("refX", "8");
   marker.setAttribute("refY", "6");
   marker.setAttribute("orient", "auto");
+  marker.setAttribute("markerUnits", "strokeWidth");
+  marker.setAttribute("overflow", "visible");
 
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.setAttribute("d", "M0,2 L0,10 L10,6 z");
